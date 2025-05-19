@@ -1,56 +1,11 @@
-export class Vector {
-  private readonly _v: number[];
-  readonly dim: number;
-
-  constructor(values: number[]) {
-    if (values.length === 0) {
-      throw new Error("Vector must contain at least one component");
-    }
-    this._v = [...values];
-    this.dim = values.length;
-  }
-
-  /**
-   * Component-wise addition
-   */
-  add(other: Vector): Vector {
-    if (this.dim !== other.dim) {
-      throw new Error(`Dimension mismatch: ${this.dim} vs ${other.dim}`);
-    }
-    // console.log(this._v, other);
-
-    const result = this._v.map((val, i) => val + other._v[i]);
-    return new Vector(result);
-  }
-
-  /**
-   * Scalar multiplication
-   */
-  scale(scalar: number): Vector {
-    const result = this._v.map(val => val * scalar);
-    // console.log(scalar, "Scale result: ", result);
-    return new Vector(result);
-  }
-
-  /**
-   * Returns raw array of components
-   */
-  toArray(): number[] {
-    return [...this._v];
-  }
-}
-
-export type State = {
-    value: Vector, 
-    rate: Vector
-}
-
-export type RateDerivativeFn = (value: Vector, rate: Vector) => Vector;
+import { RateDerivativeFn, State } from "./types.ts";
 
 
-// -----------------------------------------------------------------------------
-// Euler (RK‑1)
-// -----------------------------------------------------------------------------
+
+
+
+
+
 export class Euler {
 
     deltaH: number;//in seconds
@@ -76,7 +31,12 @@ export class Euler {
 }
 
 
-class RungeKutta2 {
+
+
+
+
+
+export class RungeKutta2 {
     deltaH: number;//in seconds
     private readonly rateDerivativeFn: RateDerivativeFn;
     constructor(rateDerivativeFn: RateDerivativeFn, dH: number) {
@@ -85,7 +45,7 @@ class RungeKutta2 {
     }
 
     step(currentState: State): State {
-        if(currentState.value.dim != currentState.value.dim) {
+        if(currentState.value.dim != currentState.rate.dim) {
             throw new Error(`Dimmensions do not match with Value: ${currentState.value.dim} vs Rate: ${currentState.rate.dim}`);
         }
         const p1value = currentState.value;
@@ -109,46 +69,3 @@ class RungeKutta2 {
     }
 }
 
-
-function test() {
-    const step = 0.05
-    let curValueE = new Vector([0]);
-    let curRateE = new Vector([-1]);
-    let curValueR = new Vector([0]);
-    let curRateR = new Vector([-1]);
-    const euler = new Euler(accel, step)
-    const rk2 = new RungeKutta2(accel, step)
-    
-    for(let time = 0; time <= 3; time += step) {
-        // console.log(time, answerFunction(time));
-        console.log(time+", "+answerFunction(time)+", "+curValueE.toArray()[0]+", "+curValueR.toArray()[0]);
-        const resE = euler.step({value: curValueE, rate: curRateE});
-        const resR = rk2.step({value: curValueR, rate: curRateR});
-        curValueE = resE.value;
-        curRateE = resE.rate;
-        curValueR = resR.value;
-        curRateR = resR.rate;
-    }
-}
-
-test();
-
-function answerFunction(t: number) {
-    return -0.1*Math.sin(10*t);
-}
-
-function accel(pos: Vector, rate: Vector) {
-    let posArr = pos.toArray()
-    
-    // let newArr = []
-    // posArr.forEach(pi => {
-    //     newArr.push( - pi * 100 / 1);
-    // });
-
-    posArr = posArr.map(pi => {
-         return - pi * 100 / 1;
-    });
-
-    // console.log(posArr);
-    return new Vector(posArr);
-}

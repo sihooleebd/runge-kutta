@@ -1,11 +1,11 @@
 {
   "name": "runge-kutta",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": " node --loader ts-node/esm RungeKutta.ts"
+    "start": " node --loader ts-node/esm index.ts"
   },
   "author": "",
   "license": "ISC",
