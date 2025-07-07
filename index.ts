@@ -11,8 +11,8 @@ function test() {
 
 
 
-
-    
+   
+         
     const oscillation = new Oscillation(mass, springConstant);
     
     let curValueE = new Vector([0]);

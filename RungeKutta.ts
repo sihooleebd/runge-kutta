@@ -1,11 +1,6 @@
 import { RateDerivativeFn, State } from "./types.ts";
 
 
-
-
-
-
-
 export class Euler {
 
     deltaH: number;//in seconds
@@ -29,7 +24,6 @@ export class Euler {
         return { value: nextValue, rate: nextRate };
     }
 }
-
 
 
 

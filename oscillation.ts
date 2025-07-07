@@ -12,7 +12,6 @@ export class Oscillation {
         this.mass = mass;
         this.amplitude = this.mass * 10 / this.springConstant;
         this.omega = Math.sqrt(this.springConstant/this.mass);
-
     } 
     answerFunction = (t: number) => {
         return -this.amplitude*Math.sin(this.omega*t);
